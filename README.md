@@ -464,3 +464,32 @@ ashujava             appv1     dda6a22b3b03   8 seconds ago    467MB
 asifjava             appv1     4cec1e3ef13c   8 seconds ago    467MB
 ```
 
+### creating container and checking output 
+
+```
+ashu@docker-ce ashu-images]$ docker  run -it -d --name ashujc1  ashujava:appv1  
+2695e88b3edab82610e5ec1684aedcf4924ba90cb79abfcfca5b2062b32bf881
+[ashu@docker-ce ashu-images]$ docker  ps
+CONTAINER ID   IMAGE            COMMAND                    CREATED         STATUS        PORTS     NAMES
+2695e88b3eda   ashujava:appv1   "/bin/sh -c {\"java\",…"   2 seconds ago   Up 1 second             ashujc1
+[ashu@docker-ce ashu-images]$ docker logs ashujc1
+Hello World, I am Rajeshwaran
+Hello World, I am Rajeshwaran
+Hello World, I am Rajeshwaran
+Hello World, I am Rajeshwaran
+```
+
+### check resources of containers 
+
+```
+[ashu@docker-ce ashu-images]$ docker  stats 
+
+CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     BLOCK I/O   PIDS
+287b143d5887   shijinc1        0.08%     9.23MiB / 7.664GiB    0.12%     710B / 0B   0B / 0B     19
+2fb2fc7241d4   vijayac1        0.08%     9.211MiB / 7.664GiB   0.12%     710B / 0B   0B / 0B     19
+fc6b08b9aa7e   elated_edison   0.09%     9.277MiB / 7.664GiB   0.12%     710B / 0B   0B / 0B     19
+62d1730c8064   RAJESH          0.08%     9.258MiB / 7.664GiB   0.12%     710B / 0B   0B / 0B     19
+```
+
+
+

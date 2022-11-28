@@ -193,3 +193,25 @@ mysql                latest    3842e9cdffd2   11 days ago     538MB
 oraclelinux          8.4       97e22ab49eea   12 months ago   246MB
 ```
 
+## Container management 
+
+### creating container 
+
+<img src="cc.png">
+
+### creating container 
+
+```
+[ashu@docker-ce ~]$ docker  run  --name  ashuc1  -it -d  oraclelinux:8.4  sleep 1000 
+e011394d291ef6e510b5274fe777c9dd77e4fce8ef1fcf5bf60a29513988cb5c
+[ashu@docker-ce ~]$ docker  ps
+CONTAINER ID   IMAGE             COMMAND        CREATED              STATUS              PORTS     NAMES
+4d7c89f7d784   oraclelinux:8.4   "sleep 1000"   3 seconds ago        Up 2 seconds                  arpitc1
+e011394d291e   oraclelinux:8.4   "sleep 1000"   14 seconds ago       Up 13 seconds                 ashuc1
+a2fdf34ed22d   oraclelinux:8.4   "bash"         About a minute ago   Up About a minute             dhruba1
+[ashu@docker-ce ~]$ 
+
+```
+
+
+

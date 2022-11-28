@@ -358,4 +358,109 @@ helloc1.txt
 
 ```
 
+## Creating custom Images -- using Dockerfile 
+
+<img src="dfile.png">
+
+### creating sample java code based docker image
+
+### code 
+
+```
+class ashu { 
+    public static void main(String args[]) 
+    { 
+        // test expression 
+        while (true) { 
+            System.out.println("Hello World ,i am ashutoshh singh"); 
+            try {
+                Thread.sleep(2000);
+            } catch (Exception ex) {
+                // Ignored
+            }
+  
+            // update expression 
+        } 
+    } 
+} 
+```
+
+### Dockerile 
+
+```
+ FROM openjdk
+# we are refering to jdk support by above image 
+LABEL name=ashutoshh
+LABEL email=ashutoshh@linux.com 
+# optional field but image developer info 
+RUN mkdir /mycode 
+# RUN can give shell access while image building 
+COPY ashu.java /mycode/
+# copy code from docker client to newly created image during image build time
+WORKDIR /mycode
+# use to change directory while image build process
+RUN javac ashu.java 
+# using javac to compile code 
+CMD ["java","ashu"]
+# setting parent process for this image 
+# can be replaced by user while creating container 
+
+```
+
+### lets build it 
+
+```
+[ashu@docker-ce ashu-images]$ ls
+java-app  python-apps
+[ashu@docker-ce ashu-images]$ docker images
+REPOSITORY           TAG       IMAGE ID       CREATED         SIZE
+oraclelinux          9         0c19a2c2d02f   2 days ago      225MB
+quay.io/cki/python   latest    02e3514dbff3   6 days ago      991MB
+fedora               latest    d1cd7f8c89a9   12 days ago     184MB
+oraclelinux          8.4       97e22ab49eea   12 months ago   246MB
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ docker  build  -t  ashujava:appv1   java-app/
+Sending build context to Docker daemon  3.584kB
+Step 1/8 : FROM openjdk
+latest: Pulling from library/openjdk
+0bb5c0c24818: Pull complete 
+3b2939e28fef: Pull complete 
+24540a251b73: Pull complete 
+Digest: sha256:d696170b024866d67864c6ae8b0fe2557177d225bca10d507cc7956947224658
+Status: Downloaded newer image for openjdk:latest
+ ---> 44ca3421c900
+Step 2/8 : LABEL name=ashutoshh
+ ---> Running in f5ffef0eee23
+Removing intermediate container f5ffef0eee23
+ ---> 978d66e748e5
+Step 3/8 : LABEL email=ashutoshh@linux.com
+ ---> Running in 3c26ae3b01ee
+Removing intermediate container 3c26ae3b01ee
+ ---> 01eb778ecc88
+Step 4/8 : RUN mkdir /mycode
+ ---> Running in 14d17f769e41
+Removing intermediate container 14d17f769e41
+ ---> 2b60a9c6f0f8
+Step 5/8 : COPY ashu.java /mycode/
+ ---> eb916a7b5f02
+Step 6/8 : WORKDIR /mycode
+ ---> Running in 1d78ff7b7680
+Removing intermediate container 1d78ff7b7680
+ ---> 7da5504c4e31
+Step 7/8 : RUN javac ashu.java
+ ---> Running in 40efe41899b7
+Removing intermediate container 40efe41899b7
+ ---> 6725d89599d4
+Step 8/8 : CMD ["java","ashu"]
+ ---> Running in 0dab0671c7b1
+Removing intermediate container 0dab0671c7b1
+ ---> 07f1451e7300
+Successfully built 07f1451e7300
+Successfully tagged ashujava:appv1
+[ashu@docker-ce ashu-images]$ docker images
+REPOSITORY           TAG       IMAGE ID       CREATED          SIZE
+ashujava             appv1     dda6a22b3b03   8 seconds ago    467MB
+asifjava             appv1     4cec1e3ef13c   8 seconds ago    467MB
+```
 

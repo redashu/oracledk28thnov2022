@@ -1,1 +1,4 @@
-# oracledk28thnov2022
+# Training plan 
+
+<img src="plan.png">
+

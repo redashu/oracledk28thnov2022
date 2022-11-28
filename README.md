@@ -324,4 +324,38 @@ Error: failed to start containers: ashuc1
 <img src="lifec.png">
 
 
+### task solution to copy data from 1st container to 2nd container 
+
+```
+[ashu@docker-ce ~]$ docker run -itd --name ashuc1 oraclelinux:8.4 sleep 1000
+f33a9b3b91769144c0e1b0e3fe0041cb9a29b97505348e53375cc516c84446f6
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker run -itd --name ashuc2 oraclelinux:8.4 sleep 1000
+b1202a1a355a0b0ca036514df4e605188036b50920d12af08ee73c0054af109c
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker  ps  |  grep ashu
+b1202a1a355a   oraclelinux:8.4   "sleep 1000"    8 seconds ago    Up 7 seconds                      ashuc2
+f33a9b3b9176   oraclelinux:8.4   "sleep 1000"    14 seconds ago   Up 12 seconds                     ashuc1
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker exec -it ashuc1  bash 
+[root@f33a9b3b9176 /]# 
+[root@f33a9b3b9176 /]# echo hi i am ashutoshh singh >/tmp/helloc1.txt 
+[root@f33a9b3b9176 /]# 
+[root@f33a9b3b9176 /]# ls /tmp/
+helloc1.txt
+[root@f33a9b3b9176 /]# 
+[root@f33a9b3b9176 /]# exit
+exit
+[ashu@docker-ce ~]$ docker  cp  ashuc1:/tmp/helloc1.txt  . 
+[ashu@docker-ce ~]$ ls
+helloc1.txt
+[ashu@docker-ce ~]$ docker  cp  helloc1.txt   ashuc2:/tmp/
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker  exec  ashuc2  ls /tmp
+helloc1.txt
+
+```
+
 

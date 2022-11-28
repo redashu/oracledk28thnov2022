@@ -121,5 +121,75 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service 
 
 <img src="clis.png">
 
+### understanding creating containers  using contaienr images 
 
+<img src="c1.png">
+
+## image operations 
+
+### pull and check 
+
+```
+[ashu@docker-ce ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[ashu@docker-ce ~]$ docker pull mysql 
+Using default tag: latest
+latest: Pulling from library/mysql
+0bb5c0c24818: Pull complete 
+cbb3106fbb5a: Pull complete 
+550536ae1d5e: Pull complete 
+33f98928796e: Pull complete 
+a341087cff11: Pull complete 
+0e26ac5b33f6: Pull complete 
+c883b83a7112: Pull complete 
+873af5c876c6: Pull complete 
+8fe8ebd061d5: Pull complete 
+7ac2553cf6b4: Pull complete 
+ad655e218e12: Pull complete 
+Digest: sha256:96439dd0d8d085cd90c8001be2c9dde07b8a68b472bd20efcbe3df78cff66492
+Status: Downloaded newer image for mysql:latest
+docker.io/library/mysql:latest
+[ashu@docker-ce ~]$ docker  images
+REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
+mysql        latest    3842e9cdffd2   11 days ago   538MB
+[ashu@docker-ce ~]$ 
+
+```
+
+### oracle linux image pull 
+
+```
+[ashu@docker-ce ~]$ docker pull oraclelinux:8.4 
+8.4: Pulling from library/oraclelinux
+a4df6f21af84: Pull complete 
+Digest: sha256:b81d5b0638bb67030b207d28586d0e714a811cc612396dbe3410db406998b3ad
+Status: Downloaded newer image for oraclelinux:8.4
+docker.io/library/oraclelinux:8.4
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker  images
+REPOSITORY    TAG       IMAGE ID       CREATED         SIZE
+mysql         latest    3842e9cdffd2   11 days ago     538MB
+oraclelinux   8.4       97e22ab49eea   12 months ago   246MB
+```
+
+### downloading from quay 
+
+```
+[ashu@docker-ce ~]$ docker pull quay.io/cki/python
+Using default tag: latest
+latest: Pulling from cki/python
+7a05f01240ab: Pull complete 
+343808d3e526: Pull complete 
+Digest: sha256:793e74eb1965a466d20aa787b916595ae8efac29be7f7ba740a05c4f1d1502d4
+Status: Downloaded newer image for quay.io/cki/python:latest
+quay.io/cki/python:latest
+[ashu@docker-ce ~]$ docker  images
+REPOSITORY           TAG       IMAGE ID       CREATED         SIZE
+oraclelinux          9         0c19a2c2d02f   2 days ago      225MB
+quay.io/cki/python   latest    02e3514dbff3   6 days ago      991MB
+mongo                latest    2dd27bb6d3e6   11 days ago     695MB
+mysql                latest    3842e9cdffd2   11 days ago     538MB
+oraclelinux          8.4       97e22ab49eea   12 months ago   246MB
+```
 

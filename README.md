@@ -319,5 +319,9 @@ Error: failed to start containers: ashuc1
 
 ```
 
+### contianer life cycle management 
+
+<img src="lifec.png">
+
 
 

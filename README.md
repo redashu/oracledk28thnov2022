@@ -213,5 +213,111 @@ a2fdf34ed22d   oraclelinux:8.4   "bash"         About a minute ago   Up About a 
 
 ```
 
+### recreating it 
+
+```
+[ashu@docker-ce ~]$ docker images
+REPOSITORY           TAG       IMAGE ID       CREATED         SIZE
+quay.io/cki/python   latest    02e3514dbff3   6 days ago      991MB
+fedora               latest    d1cd7f8c89a9   12 days ago     184MB
+oraclelinux          8.4       97e22ab49eea   12 months ago   246MB
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker  ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker run --name ashuc1 -itd  oraclelinux:8.4  sleep 1000 
+d3475adee03f7b055ea2da62593b029401eb453112d8709be706e4c79c5cbc16
+[ashu@docker-ce ~]$ docker  ps
+CONTAINER ID   IMAGE             COMMAND        CREATED          STATUS          PORTS     NAMES
+19fe7498234a   oraclelinux:8.4   "sleep 1000"   3 seconds ago    Up 2 seconds              sindhu1
+d3475adee03f   oraclelinux:8.4   "sleep 1000"   4 seconds ago    Up 3 seconds              ashuc1
+7e68200f6bfc   oraclelinux:8.4   "sleep 1000"   18 seconds ago   Up 17 seconds             dhruba1
+ccfc4692f882   oraclelinux:8.4   "sleep 1000"   29 seconds ago   Up 27 seconds             shijin
+2235821361fa   oraclelinux:8.4   "sleep 100"    35 seconds ago   Up 33 seconds             vijaya
+[ashu@docker-ce ~]$ 
+
+```
+
+### to list all the containers 
+
+```
+[ashu@docker-ce ~]$ docker ps -a
+CONTAINER ID   IMAGE             COMMAND        CREATED              STATUS                          PORTS     NAMES
+dfb500a60171   oraclelinux:8.4   "mycon"        21 seconds ago       Created                                   asif2
+9452279d1b4f   oraclelinux:8.4   "sleep 1000"   50 seconds ago       Up 49 seconds                             prao1
+50201182afc7   oraclelinux:8.4   "sleep 10"     51 seconds ago       Exited (0) 40 seconds ago                 dhruba1
+db195dd42a58   oraclelinux:8.4   "sleep 100"    About a minute ago   Up About a minute                         niladri1
+6fb42e55bf6a   oraclelinux:8.4   "sleep 1000"   About a minute ago   Up About a minute                         rajesh
+d3ef610f93da   oraclelinux:8.4   "sleep 100"    About a minute ago   Exited (137) 21 seconds ago               prao
+6c4becb87116   oraclelinux:8.4   "sleep 1000"   About a minute ago   Up About a minute                         arpitc2
+16a0ea8dca2b   fedora:latest     "sleep 1000"   About a minute ago   Up About a minute                         pranav
+
+```
+
+### stop and start 
+
+```
+ashu@docker-ce ~]$ docker  stop  ashuc1 
+ashuc1
+===
+[ashu@docker-ce ~]$ docker  start  ashuc1
+ashuc1
+[ashu@docke
+```
+
+### accessing container shell 
+
+```
+[ashu@docker-ce ~]$ docker  exec -it ashuc1  bash
+[root@d3475adee03f /]# 
+[root@d3475adee03f /]# 
+[root@d3475adee03f /]# uname -r
+5.10.147-133.644.amzn2.x86_64
+[root@d3475adee03f /]# cat  /etc/os-release 
+NAME="Oracle Linux Server"
+VERSION="8.4"
+ID="ol"
+ID_LIKE="fedora"
+VARIANT="Server"
+VARIANT_ID="server"
+VERSION_ID="8.4"
+PLATFORM_ID="platform:el8"
+PRETTY_NAME="Oracle Linux Server 8.4"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:oracle:linux:8:4:server"
+HOME_URL="https://linux.oracle.com/"
+BUG_REPORT_URL="https://bugzilla.oracle.com/"
+
+ORACLE_BUGZILLA_PRODUCT="Oracle Linux 8"
+ORACLE_BUGZILLA_PRODUCT_VERSION=8.4
+ORACLE_SUPPORT_PRODUCT="Oracle Linux"
+ORACLE_SUPPORT_PRODUCT_VERSION=8.4
+[root@d3475adee03f /]# 
+[root@d3475adee03f /]# ls /
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@d3475adee03f /]# 
+[root@d3475adee03f /]# exit
+exit
+[ashu@docker-ce ~]$ 
+
+```
+
+### remove a running container 
+
+```
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker stop ashuc1
+ashuc1
+[ashu@docker-ce ~]$ docker rm ashuc1 
+ashuc1
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ docker start ashuc1
+Error response from daemon: No such container: ashuc1
+Error: failed to start containers: ashuc1
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ 
+
+```
+
 
 

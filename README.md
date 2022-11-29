@@ -225,4 +225,106 @@ ashujava             appv1       dda6a22b3b03   20 hours ago        467MB
 ```
 
 
+# Introduction to container networking 
+
+### COntainer networking model 
+
+<img src="cnet.png">
+
+### container networking concept 
+
+<img src="dhcp.png">
+
+### networking topology 
+
+<img src="topo.png">
+
+### checking netwoking 
+
+```
+[ashu@docker-ce ashu-images]$ docker  network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+f8a045b93718   bridge    bridge    local
+f10217e9c633   host      host      local
+ab71c0c8f387   none      null      local
+[ashu@docker-ce ashu-images]$ docker  network  inspect  f8a045b93718
+[
+    {
+        "Name": "bridge",
+        "Id": "f8a045b9371844b6884272481533c781344a6c8c78a6d955a507286338a3b109",
+        "Created": "2022-11-29T03:55:13.082439023Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+```
+
+### checking container networking details 
+
+```
+[ashu@docker-ce ashu-images]$ docker images |  grep ashu
+ashunginx            1.0         7eb69787a3a5   22 minutes ago      144MB
+ashujava             appv3       1357fe309c38   About an hour ago   672MB
+ashu.java            appDay2     d516a815c2fe   About an hour ago   672MB
+ashujava             appDay2     d516a815c2fe   About an hour ago   672MB
+ashujava             appv2       a2de1c0759d7   2 hours ago         672MB
+ashujava             appv1       dda6a22b3b03   20 hours ago        467MB
+[ashu@docker-ce ashu-images]$ docker run -d --name ashungc1 ashunginx:1.0 
+2181c1ea80417897b162213d516e57bd9376f9c3a00ffcb000033dd81bf23fed
+[ashu@docker-ce ashu-images]$ docker  network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+f8a045b93718   bridge    bridge    local
+f10217e9c633   host      host      local
+ab71c0c8f387   none      null      local
+[ashu@docker-ce ashu-images]$ docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS     NAMES
+a2c220c14f4a   asifnginx:1.0   "/docker-entrypoint.…"   43 seconds ago   Up 42 seconds   80/tcp    asifc5
+2181c1ea8041   ashunginx:1.0   "/docker-entrypoint.…"   2 minutes ago    Up 2 minutes    80/tcp    ashungc1
+[ashu@docker-ce ashu-images]$ 
+```
+
+### checking particular container ip 
+
+```
+[ashu@docker-ce ashu-images]$ docker  inspect ashungc1   |   grep -i ipaddress
+            "SecondaryIPAddresses": null,
+            "IPAddress": "172.17.0.2",
+                    "IPAddress": "172.17.0.2",
+[ashu@docker-ce ashu-images]$ 
+```
+
+### to access anything outside host container will be using hostIP address -- called NAT 
+
+<img src="nat.png">
+
+### port mapping concept -- for external user access 
+
+<img src="portm.png">
+
+### implement 
+
+```
+[ashu@docker-ce ashu-images]$ docker run -d --name ashungc1  -p  1234:80      ashunginx:1.0 
+805c53416e5706181b23f714f7de9c4ed4f937d956bb561cc551c80ab057bd0d
+[ashu@docker-ce ashu-images]$ docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+805c53416e57   ashunginx:1.0   "/docker-entrypoint.…"   4 seconds ago   Up 2 seconds   0.0.0.0:1234->80/tcp, :::1234->80/tcp   ashungc1
+[ashu@docker-ce ashu-images]$ 
+
+
+```
 

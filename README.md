@@ -476,4 +476,34 @@ Successfully tagged ashujava:webappv1
 
 <img src="cg.png">
 
+### limiting ram in container 
+
+```
+ 225  docker run -d --name ashucc11  --restart always -p 1234:8080  --memory 400M ashujava:webappv1 
+  226  docker ps
+  227  docker  stats  ashucc11
+  228  history 
+[ashu@docker-ce ashu-images]$ docker ps
+CONTAINER ID   IMAGE                 COMMAND             CREATED              STATUS              PORTS                                             NAMES
+f7f58d190d50   75b1c4b2b823          "catalina.sh run"   4 seconds ago        Up 4 seconds        0.0.0.0:2999->8080/tcp, :::2999->8080/tcp         arpit29nov_8
+1b0f6b6a5456   mamtajava:javaapp     "catalina.sh run"   38 seconds ago       Up 37 seconds       0.0.0.0:1235->8080/tcp, :::1235->8080/tcp         mamtacc11
+7dfa2fd0936e   ashujava:webappv1     "catalina.sh run"   About a minute ago   Up About a minute   0.0.0.0:1234->8080/tcp, :::1234->8080/tcp         ashucc11
+c13f495cb1e7   75b1c4b2b823          "catalina.sh run"   40 minutes ago       Up 40 minutes       8080/tcp, 0.0.0.0:3999->80/tcp, :::3999->80/tcp   arpit29nov_6
+fc2fecb25178   pranavjava:webapp01   "catalina.sh run"   43 minutes ago       Up 43 minutes       0.0.0.0:1999->8080/tcp, :::1999->8080/tcp         pranavc1
+[ashu@docker-ce ashu-images]$ 
+```
+
+### docker stats 
+
+```
+CONTAINER ID   NAME       CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+7dfa2fd0936e   ashucc11   0.01%     57.52MiB / 400MiB   14.38%    710B / 0B   0B / 0B     30
+^C
+```
+
+### putting memory and cpu limit both 
+
+```
+docker run -d --name ashucc11  --restart always -p 1234:8080  --memory 400M  --cpu-shares=300      ashujava:webappv1 
+```
 

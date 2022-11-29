@@ -138,5 +138,91 @@ exit
 
 <img src="jcode.png">
 
+## More app to containerize 
+
+### webapps examples 
+
+<img src="webapp1.png">
+
+### Understanding about webapp servers
+
+<img src="webapps.png">
+
+### nginx webapp with sample frontend app hosting 
+
+<img src="apph.png">
+
+### demo 
+
+```
+[ashu@docker-ce ashu-images]$ git clone https://github.com/schoolofdevops/html-sample-app.git
+Cloning into 'html-sample-app'...
+remote: Enumerating objects: 74, done.
+remote: Total 74 (delta 0), reused 0 (delta 0), pack-reused 74
+Receiving objects: 100% (74/74), 1.38 MiB | 23.56 MiB/s, done.
+Resolving deltas: 100% (5/5), done.
+[ashu@docker-ce ashu-images]$ ls
+html-sample-app  java-app  python-apps
+[ashu@docker-ce ashu-images]$ 
+
+```
+
+### Dockerfile -- using nginx server 
+
+```
+FROM nginx 
+# taking nginx image from docker hub
+LABEL name=ashutoshh
+COPY . /usr/share/nginx/html/
+# copy all the data from dockerfile location to nginx default app location 
+# Note: if we don't use CMD then -- base image CMD will be inherited 
+```
+
+
+### .dockerignroe to ingore copy 
+
+```
+.dockerignore
+Dockerfile
+*.txt
+.git 
+```
+
+### lets build it 
+
+```
+
+[ashu@docker-ce ashu-images]$ ls
+html-sample-app  java-app  python-apps
+[ashu@docker-ce ashu-images]$ docker  build -t ashunginx:1.0  html-sample-app/ 
+Sending build context to Docker daemon  2.099MB
+Step 1/3 : FROM nginx
+latest: Pulling from library/nginx
+a603fa5e3b41: Pull complete 
+c39e1cda007e: Pull complete 
+90cfefba34d7: Pull complete 
+a38226fb7aba: Pull complete 
+62583498bae6: Pull complete 
+9802a2cfdb8d: Pull complete 
+Digest: sha256:e209ac2f37c70c1e0e9873a5f7231e91dcd83fdf1178d8ed36c2ec09974210ba
+Status: Downloaded newer image for nginx:latest
+ ---> 88736fe82739
+Step 2/3 : LABEL name=ashutoshh
+ ---> Running in 436268d1a661
+Removing intermediate container 436268d1a661
+ ---> e74764e06fab
+Step 3/3 : COPY . /usr/share/nginx/html/
+ ---> 7eb69787a3a5
+Successfully built 7eb69787a3a5
+Successfully tagged ashunginx:1.0
+[ashu@docker-ce ashu-images]$ docker images  |  grep ashu
+ashunginx            1.0         7eb69787a3a5   9 seconds ago       144MB
+ashujava             appv3       1357fe309c38   53 minutes ago      672MB
+ashu.java            appDay2     d516a815c2fe   About an hour ago   672MB
+ashujava             appDay2     d516a815c2fe   About an hour ago   672MB
+ashujava             appv2       a2de1c0759d7   About an hour ago   672MB
+ashujava             appv1       dda6a22b3b03   20 hours ago        467MB
+```
+
 
 

@@ -367,3 +367,39 @@ Removing login credentials for https://index.docker.io/v1/
 [ashu@docker-ce ashu-images]$ 
 ```
 
+### container to docker images 
+
+```
+200  docker run -itd --name ashucimg  oraclelinux:8.4 
+  201  docker exec -it ashucimg bash 
+  202  history 
+  203  docker commit  ashucimg ashucimg:v007 
+  204  docker images  |  grep ashu
+  205  docker run -itd --name ashutestc1 ashucimg:v007  
+  206  docker ps
+  207  docker  inspect  ashutestc1
+  208  history 
+  209  docker update  --restart always   ashutestc1
+  210  docker  inspect  ashutestc1
+  211  history 
+[ashu@docker-ce ashu-images]$ docker tag ashucimg:v007  docker.io/dockerashu/ashucimg:v007
+[ashu@docker-ce ashu-images]$ docker login 
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@docker-ce ashu-images]$ docker push docker.io/dockerashu/ashucimg:v007
+The push refers to repository [docker.io/dockerashu/ashucimg]
+16adc8bf8d75: Pushed 
+2d3586eacb61: Layer already exists 
+v007: digest: sha256:a01d91988151dee4af66d4b4fafe825224bda81e171afcf4f35b2bef8a71c18a size: 742
+[ashu@docker-ce ashu-images]$ docker logout 
+Removing login credentials for https://index.docker.io/v1/
+[ashu@docker-ce ashu-images]$ 
+```
+
+

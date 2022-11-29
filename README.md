@@ -507,3 +507,65 @@ CONTAINER ID   NAME       CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BL
 docker run -d --name ashucc11  --restart always -p 1234:8080  --memory 400M  --cpu-shares=300      ashujava:webappv1 
 ```
 
+### containers are ephemral in nature -- Introduction to Storage in Docker 
+
+<img src="st.png">
+
+### docker volume and other components 
+
+<img src="dvol.png">
+
+### creating volume 
+
+```
+[ashu@docker-ce ashu-images]$ docker volume  ls
+DRIVER    VOLUME NAME
+[ashu@docker-ce ashu-images]$ docker volume  create  ashu-vol1 
+ashu-vol1
+[ashu@docker-ce ashu-images]$ docker volume  ls
+DRIVER    VOLUME NAME
+local     ashu-vol1
+[ashu@docker-ce ashu-images]$ docker volume  inspect  ashu-vol1
+[
+    {
+        "CreatedAt": "2022-11-29T11:08:54Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/ashu-vol1/_data",
+        "Name": "ashu-vol1",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+[ashu@docker-ce ashu-images]$ 
+
+```
+
+### mounting volume in a container 
+
+```
+[ashu@docker-ce ashu-images]$ docker run -d  --name ashuvc1 -v  ashu-vol1:/mnt/data   oraclelinux:8.4  sleep 1000
+64a017873be8f721fe290c69e113e4445249a84f7c49ff74e6960933c3fb6712
+[ashu@docker-ce ashu-images]$ docker ps
+CONTAINER ID   IMAGE             COMMAND        CREATED         STATUS         PORTS     NAMES
+314f8c3ebbf5   oraclelinux:8.4   "sleep 1000"   2 seconds ago   Up 1 second              mamtac1
+f5fa79d5d2fa   oraclelinux:8.4   "sleep 1000"   4 seconds ago   Up 3 seconds             arpit_29nov_9
+64a017873be8   oraclelinux:8.4   "sleep 1000"   6 seconds ago   Up 4 seconds             ashuvc1
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ docker run -d  --name ashuvc2 -v  /etc:/etc1:ro    oraclelinux:8.4  sleep 1000
+635465108ded4e3f4e6dcb5d96ca2efc8474d40801bc2c85e309ca895c8ff7db
+[ashu@docker-ce ashu-images]$ docker  exec -it ashuvc1 bash 
+[root@64a017873be8 /]# cd  /mnt/data/
+[root@64a017873be8 data]# ls
+[root@64a017873be8 data]# mkdir hello world 
+[root@64a017873be8 data]# echo hiii >a.txt
+[root@64a017873be8 data]# ls
+a.txt  hello  world
+[root@64a017873be8 data]# exit
+exit
+[ashu@docker-ce ashu-images]$ docker rm ashuvc1 -f
+ashuvc1
+```
+
+

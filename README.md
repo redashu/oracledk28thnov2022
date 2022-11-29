@@ -402,4 +402,74 @@ Removing login credentials for https://index.docker.io/v1/
 [ashu@docker-ce ashu-images]$ 
 ```
 
+### java backend based webapp containerization 
+
+<img src="tomcat.png">
+
+### taking java based webapp 
+
+```
+[ashu@docker-ce ashu-images]$ git clone https://github.com/redashu/javawebapp.git
+fatal: destination path 'javawebapp' already exists and is not an empty directory.
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ ls
+html-sample-app  java-app  javawebapp  python-apps
+[ashu@docker-ce ashu-images]$ 
+
+```
+
+### Understanding dockerfile 
+
+```
+FROM tomcat
+LABEL name=ashutoshh
+WORKDIR /usr/local/tomcat/webapps
+RUN mkdir ashu
+WORKDIR ashu 
+ADD myapp . 
+
+```
+
+### lets build it 
+
+```
+[ashu@docker-ce ashu-images]$ ls
+html-sample-app  java-app  javawebapp  python-apps
+[ashu@docker-ce ashu-images]$ docker build -t  ashujava:webappv1  javawebapp/ 
+Sending build context to Docker daemon  160.8kB
+Step 1/6 : FROM tomcat
+latest: Pulling from library/tomcat
+e96e057aae67: Pull complete 
+014fa72e018d: Pull complete 
+06768b8afb03: Pull complete 
+3c12ca51ab80: Pull complete 
+55a6d794ff88: Pull complete 
+c98105279431: Pull complete 
+b1ab501a2026: Pull complete 
+Digest: sha256:24617d8a035492d33a732dd6154cc64a86463a4d3157c67c6364b09141dc475a
+Status: Downloaded newer image for tomcat:latest
+ ---> 1ca69d1bf49a
+Step 2/6 : LABEL name=ashutoshh
+ ---> Running in 2f1fd7be3b83
+Removing intermediate container 2f1fd7be3b83
+ ---> 96c98f8c75e3
+Step 3/6 : WORKDIR /usr/local/tomcat/webapps
+ ---> Running in 19361f468720
+Removing intermediate container 19361f468720
+ ---> 6cb19aa61c4d
+Step 4/6 : RUN mkdir ashu
+ ---> Running in 37a5daef2880
+Removing intermediate container 37a5daef2880
+ ---> c1782a321fd1
+Step 5/6 : WORKDIR ashu
+ ---> Running in 5a4550d6697a
+Removing intermediate container 5a4550d6697a
+ ---> ed69017b8bb9
+Step 6/6 : ADD myapp .
+ ---> 75b1c4b2b823
+Successfully built 75b1c4b2b823
+Successfully tagged ashujava:webappv1
+```
+
+
 

@@ -48,4 +48,19 @@ ORACLE_SUPPORT_PRODUCT_VERSION=8.7
 bash-4.4# exit
 exit
 ```
+### jdk11.dockerfile 
+
+```
+FROM oraclelinux:8.4 
+LABEL name=ashutoshh
+LABEL email=ashutoshh@linux.com 
+RUN yum install java-11-openjdk.x86_64 java-11-openjdk-devel.x86_64 -y 
+RUN mkdir /javacode 
+COPY ashu.java /javacode/
+WORKDIR /javacode
+RUN javac ashu.java
+CMD ["java","ashu"]
+
+```
+
 

@@ -328,3 +328,42 @@ CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS  
 
 ```
 
+### COncept to image sharing with Docker hub 
+
+<img src="dh.png">
+
+### uNderstanding docker hub image format 
+
+<img src="imagename.png">
+
+### pushing image to docker hub 
+
+```
+[ashu@docker-ce ashu-images]$ docker images   |   grep ashu
+ashunginx                           1.0             7eb69787a3a5   3 hours ago         144MB
+ashujava                            appv3           1357fe309c38   3 hours ago         672MB
+ashu.java                           appDay2         d516a815c2fe   4 hours ago         672MB
+ashujava                            appDay2         d516a815c2fe   4 hours ago         672MB
+ashujava                            appv2           a2de1c0759d7   4 hours ago         672MB
+ashujava                            appv1           dda6a22b3b03   22 hours ago        467MB
+[ashu@docker-ce ashu-images]$ docker  tag  ashunginx:1.0   docker.io/dockerashu/ashunginx:1.0 
+[ashu@docker-ce ashu-images]$ docker login -u dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@docker-ce ashu-images]$ docker push docker.io/dockerashu/ashunginx:1.0
+The push refers to repository [docker.io/dockerashu/ashunginx]
+ee2471fc5a6c: Pushed 
+6cffb086835a: Mounted from library/nginx 
+e2d75d87993c: Mounted from library/nginx 
+5a5bafd53f76: Mounted from library/nginx 
+f86e88a471f4: Mounted from library/nginx 
+
+[ashu@docker-ce ashu-images]$ docker logout 
+Removing login credentials for https://index.docker.io/v1/
+[ashu@docker-ce ashu-images]$ 
+```
+

@@ -145,6 +145,104 @@ html-sample-app  java-app  javawebapp  project-website-template  python-apps
 
 ```
 
+## managing app containers using compose 
+
+```
+[root@docker-ce ~]# curl -SL https://github.com/docker/compose/releases/download/v2.13.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 43.5M  100 43.5M    0     0  12.2M      0  0:00:03  0:00:03 --:--:-- 15.6M
+[root@docker-ce ~]# cp -v /usr/local/bin/docker-compose  /usr/bin/
+'/usr/local/bin/docker-compose' -> '/usr/bin/docker-compose'
+[root@docker-ce ~]# chmod +x /usr/bin/docker-compose 
+[root@docker-ce ~]# 
+[root@docker-ce ~]# docker-compose version 
+Docker Compose version v2.13.0
+[root@docker-ce ~]# 
+
+
+
+```
+
+### info about compose file 
+
+<img src="cfile.png">
+
+## COmpsoe file examples 
+
+### example 1 
+
+```
+
+version: '3.8'
+services: # here we write app component details
+  ashuwebapp: # name of app component -- you can give any name 
+    image: nginx 
+    container_name: ashungc1
+    ports:
+    - "1234:80"
+    volumes:
+    - "../html-sample-app:/usr/share/nginx/html/"
+    restart: always 
+```
+
+### lets run it 
+
+```
+ashu@docker-ce ashu-images]$ ls
+ashu-compose  html-sample-app  java-app  javawebapp  project-website-template  python-apps
+[ashu@docker-ce ashu-images]$ cd  ashu-compose/
+[ashu@docker-ce ashu-compose]$ ls
+docker-compose.yaml
+[ashu@docker-ce ashu-compose]$ docker-compose up -d
+[+] Running 2/2
+ ⠿ Network ashu-compose_default  Created                                                                                         0.0s
+ ⠿ Container ashungc1            Started                                                                                         0.5s
+[ashu@docker-ce ashu-compose]$ docker-compose  ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashungc1            "/docker-entrypoint.…"   ashuwebapp          running             0.0.0.0:1234->80/tcp, :::1234->80/tcp
+[ashu@docker-ce ashu-compose]$ 
+
+
+```
+
+### more operation example to compose 
+
+```
+[ashu@docker-ce ashu-compose]$ docker-compose  stop 
+[+] Running 1/1
+ ⠿ Container ashungc1  Stopped                                                                                                   0.2s
+[ashu@docker-ce ashu-compose]$ docker-compose  ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashungc1            "/docker-entrypoint.…"   ashuwebapp          exited (0)          
+[ashu@docker-ce ashu-compose]$ docker-compose  start
+[+] Running 1/1
+ ⠿ Container ashungc1  Started                                                                                                   0.5s
+[ashu@docker-ce ashu-compose]$ docker-compose  ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashungc1            "/docker-entrypoint.…"   ashuwebapp          running             0.0.0.0:1234->80/tcp, :::1234->80/tcp
+[ashu@docker-ce ashu-compose]$ 
+```
+
+### --
+
+```
+[ashu@docker-ce ashu-compose]$ docker-compose  ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashungc1            "/docker-entrypoint.…"   ashuwebapp          running             0.0.0.0:1234->80/tcp, :::1234->80/tcp
+[ashu@docker-ce ashu-compose]$ docker-compose  kill
+[+] Running 1/1
+ ⠿ Container ashungc1  Killed                                                                                                    0.2s
+[ashu@docker-ce ashu-compose]$ docker-compose  start
+[+] Running 1/1
+ ⠿ Container ashungc1  Started                                                                                                   0.5s
+[ashu@docker-ce ashu-compose]$ docker-compose  down 
+[+] Running 2/2
+ ⠿ Container ashungc1            Removed                                                                                         0.2s
+ ⠿ Network ashu-compose_default  Removed    
+```
+
 
 
 

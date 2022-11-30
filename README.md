@@ -243,6 +243,72 @@ ashungc1            "/docker-entrypoint.…"   ashuwebapp          running      
  ⠿ Network ashu-compose_default  Removed    
 ```
 
+### Example 2 -- docker compose file 
+
+```
+version: '3.8'
+services: # here we write app component details
+  ashujavaweb:
+    image: ashujava:webv1 # want to build image 
+    build: 
+      context: ../javawebapp/ # location of dockerfile 
+      dockerfile: Dockerfile  # name of dockerfile 
+    container_name: ashujc1 
+    ports:
+    - "1299:8080"
+  ashuwebapp: # name of app component -- you can give any name 
+    image: nginx 
+    container_name: ashungc1
+    ports:
+    - "1234:80"
+    volumes:
+    - "../html-sample-app:/usr/share/nginx/html/"
+    restart: always 
+   
+```
+
+### lets run it 
+
+```
+ashu@docker-ce ashu-compose]$ docker-compose up -d --build 
+[+] Building 0.7s (9/10)                                                                                                              
+ => [internal] load build definition from Dockerfile                                                                             0.0s
+ => => transferring dockerfile: 146B                                                                                             0.0s
+ => [internal] load .dockerignore                                                                                                0.0s
+ => => transferring context: 2B                                                                                                  0.0s
+ => [internal] load metadata for docker.io/library/tomcat:latest                                                                 0.0s
+ => [internal] load build context                                                                                                0.1s
+ => => transferring context: 39.71kB                                                                                             0.0s
+ => [1/5] FROM docker.io/library/tomcat                                                                                          0.7s
+ => [2/5] WORKDIR /usr/local/tomcat/webapps                                                                                      0.0s
+ => [3/5] RUN mkdir ashu                                                                                                         0.4s
+ => [4/5] WORKDIR ashu                                                                                                           0.0s
+ => [5/5] ADD myapp .                                                                                                            0.0s
+ => exporting to image                                                                                                           0.1s
+ => => exporting layers                                                                                                          0.0s
+ => => writing image sha256:f2ee2e42587c8749ec009f004d9a8bffe3c662ff2de4adcefdae3b122edea250                                     0.0s
+ => => naming to docker.io/library/ashujava:webv1                                                                                0.0s
+[+] Running 3/3
+ ⠿ Network ashu-compose_default  Created                                                                                         0.0s
+ ⠿ Container ashungc1            Started                                                                                         0.9s
+ ⠿ Container ashujc1             Started                                                                                         0.9s
+[ashu@docker-ce ashu-compose]$ docker-compose ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashujc1             "catalina.sh run"        ashujavaweb         running             0.0.0.0:1299->8080/tcp, :::1299->8080/tcp
+ashungc1            "/docker-entrypoint.…"   ashuwebapp          running             0.0.0.0:1234->80/tcp, :::1234->80/tcp
+[ashu@docker-ce ashu-compose]$ 
+```
+
+### 
+
+```
+ashu@docker-ce ashu-compose]$ docker-compose down 
+[+] Running 3/3
+ ⠿ Container ashungc1            Removed                                                                                        10.2s
+ ⠿ Container ashujc1             Removed                                                                                         0.2s
+ ⠿ Network ashu-compose_default  Removed        
+```
+
 
 
 

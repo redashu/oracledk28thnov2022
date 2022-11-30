@@ -564,6 +564,22 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 <img src="pod.png">
 
+## First Pod YAML 
+
+```
+apiVersion: v1 # the apiVersion to accept pod related request 
+kind: Pod 
+metadata: # info about Kind type 
+  name: ashupod-1  # name of pod 
+spec: # everything which pod need will be under spec --like volume,network ,security,containers
+  containers: 
+  - name: ashuc1 
+    image: docker.io/dockerashu/ashunginx:1.0 # image from docker hub 
+    ports:
+    - containerPort: 80 # app port which is running inside container 
+  
+```
+
 
 
 

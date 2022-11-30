@@ -397,6 +397,10 @@ services:
 
 <img src="etcd.png">
 
+## WOrker Node COmponents 
+
+<img src="worker.png">
+
 
 
 

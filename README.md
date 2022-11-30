@@ -580,6 +580,53 @@ spec: # everything which pod need will be under spec --like volume,network ,secu
   
 ```
 
+### lets deploy it 
+
+```
+[ashu@docker-ce ashu-images]$ cd deploy-app-k8s/
+[ashu@docker-ce deploy-app-k8s]$ ls
+ashu-app.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl   apply -f  ashu-app.yaml 
+pod/ashupod-1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          10s
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+### more pod status 
+
+```
+[ashu@docker-ce ~]$ kubectl   get po ashupod-1   
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          12m
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ kubectl   get po ashupod-1    -owide
+NAME        READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashupod-1   1/1     Running   0          13m   192.168.235.132   worker1   <none>           <none>
+[ashu@docker-ce ~]$ 
+```
+
+### more pod commands 
+
+```
+[ashu@docker-ce ~]$ kubectl   exec -it ashupod-1 -- bash 
+root@ashupod-1:/# 
+root@ashupod-1:/# 
+root@ashupod-1:/# 
+root@ashupod-1:/# ls
+bin   dev		   docker-entrypoint.sh  home  lib64  mnt  proc  run   srv  tmp  var
+boot  docker-entrypoint.d  etc			 lib   media  opt  root  sbin  sys  usr
+root@ashupod-1:/# exit
+exit
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ kubectl  delete pod ashupod-1
+pod "ashupod-1" deleted
+[ashu@docker-ce ~]$ 
+
+```
+
 
 
 

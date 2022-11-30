@@ -533,6 +533,32 @@ worker2         Ready    <none>          42d   v1.25.3
 ```
 
 
+### copy kubeconfig file to its default location 
+
+```
+[ashu@docker-ce ashu-images]$ mkdir  ~/.kube
+mkdir: cannot create directory ‘/home/ashu/.kube’: File exists
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ cp -v admin.conf   ~/.kube/config 
+‘admin.conf’ -> ‘/home/ashu/.kube/config’
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ kubectl   get  nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   42d   v1.25.3
+worker1         Ready    <none>          42d   v1.25.3
+worker2         Ready    <none>          42d   v1.25.3
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ kubectl  cluster-info 
+Kubernetes control plane is running at https://3.111.75.5:6443
+CoreDNS is running at https://3.111.75.5:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+[ashu@docker-ce ashu-images]$ 
+
+```
 
 
 

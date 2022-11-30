@@ -501,6 +501,40 @@ clientVersion:
 
 ```
 
+### client auth file on control plane --
+
+```
+[root@control-plane ~]# cd  /etc/kubernetes/
+[root@control-plane kubernetes]# ls
+admin.conf
+```
+
+### Now sending request to control plane -- from k8s client -- using kubectl 
+
+```
+ashu@docker-ce ashu-images]$ kubectl   cluster-info  
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ kubectl   cluster-info    --kubeconfig  admin.conf 
+Kubernetes control plane is running at https://3.111.75.5:6443
+CoreDNS is running at https://3.111.75.5:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+[ashu@docker-ce ashu-images]$ kubectl   get  nodes
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+[ashu@docker-ce ashu-images]$ kubectl   get  nodes  --kubeconfig admin.conf 
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   42d   v1.25.3
+worker1         Ready    <none>          42d   v1.25.3
+worker2         Ready    <none>          42d   v1.25.3
+```
+
+
+
+
 
 
 

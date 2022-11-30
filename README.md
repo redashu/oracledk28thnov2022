@@ -560,6 +560,10 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 ```
 
+## Introduction to Pod 
+
+<img src="pod.png">
+
 
 
 

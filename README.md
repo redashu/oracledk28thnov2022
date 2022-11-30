@@ -309,6 +309,45 @@ ashu@docker-ce ashu-compose]$ docker-compose down
  ⠿ Network ashu-compose_default  Removed        
 ```
 
+### Example 3  --
+
+```
+version: '3.8'
+volumes: # to create volume 
+  ashuvol009: # name of volume 
+services:
+  ashutestapp: 
+    image: alpine 
+    container_name: ashuc111
+    volumes: # attaching volume 
+    - "ashuvol009:/mnt/data/"
+    command: ping -i 5 www.google.com >/mnt/data/logs.txt  # script inside container 
+    restart: always 
+```
+
+### running a non docker-compose.yaml file 
+
+```
+[ashu@docker-ce ashu-compose]$ docker-compose -f test.yaml  up -d
+[+] Running 3/3
+ ⠿ Network ashu-compose_default      Created                                                                                     0.0s
+ ⠿ Volume "ashu-compose_ashuvol009"  Created                                                                                     0.0s
+ ⠿ Container ashuc111                Started                                                                                     0.5s
+[ashu@docker-ce ashu-compose]$ docker-compose -f test.yaml  ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashuc111            "ping -i 5 www.googl…"   ashutestapp         running             
+[ashu@docker-ce ashu-compose]$ docker-compose -f test.yaml  exec  ashutestapp  sh 
+/ # ls /mnt/data/
+/ # ls
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # exit
+[ashu@docker-ce ashu-compose]$ docker-compose -f test.yaml  down 
+[+] Running 0/1
+ ⠧ Container ashuc111  Stopping                                                                                                  8.8s
+
+
+```
+
 
 
 

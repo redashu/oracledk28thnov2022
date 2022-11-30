@@ -401,6 +401,105 @@ services:
 
 <img src="worker.png">
 
+## K8s Client machine setup 
+
+### installing kubectl on Linux machine 
+
+```
+[root@docker-ce ~]# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0    500      0 --:--:-- --:--:-- --:--:--   500
+100 42.9M  100 42.9M    0     0  55.0M      0 --:--:-- --:--:-- --:--:-- 55.0M
+[root@docker-ce ~]# ls
+kubectl
+[root@docker-ce ~]# mv kubectl  /usr/bin/
+[root@docker-ce ~]# chmod  +x /usr/bin/kubectl 
+[root@docker-ce ~]# 
+[root@docker-ce ~]# 
+[root@docker-ce ~]# kubectl  version --client 
+WARNING: This version information is deprecated and will be replaced with the output from kubectl version --short.  Use --output=yaml|json to get the full version.
+Client Version: version.Info{Major:"1", Minor:"25", GitVersion:"v1.25.4", GitCommit:"872a965c6c6526caa949f0c6ac028ef7aff3fb78", GitTreeState:"clean", BuildDate:"2022-11-09T13:36:36Z", GoVersion:"go1.19.3", Compiler:"gc", Platform:"linux/amd64"}
+Kustomize Version: v4.5.7
+[root@docker-ce ~]# kubectl  version --client -o yaml 
+clientVersion:
+  buildDate: "2022-11-09T13:36:36Z"
+  compiler: gc
+  gitCommit: 872a965c6c6526caa949f0c6ac028ef7aff3fb78
+  gitTreeState: clean
+  gitVersion: v1.25.4
+  goVersion: go1.19.3
+  major: "1"
+  minor: "25"
+  platform: linux/amd64
+kustomizeVersion: v4.5.7
+
+
+```
+
+### OR 
+
+```
+[ashu@docker-ce ashu-images]$ kubectl version --client -o yaml 
+clientVersion:
+  buildDate: "2022-11-09T13:36:36Z"
+  compiler: gc
+  gitCommit: 872a965c6c6526caa949f0c6ac028ef7aff3fb78
+  gitTreeState: clean
+  gitVersion: v1.25.4
+  goVersion: go1.19.3
+  major: "1"
+  minor: "25"
+  platform: linux/amd64
+kustomizeVersion: v4.5.7
+
+[ashu@docker-ce ashu-images]$ kubectl version --client -o json 
+{
+  "clientVersion": {
+    "major": "1",
+    "minor": "25",
+    "gitVersion": "v1.25.4",
+    "gitCommit": "872a965c6c6526caa949f0c6ac028ef7aff3fb78",
+    "gitTreeState": "clean",
+    "buildDate": "2022-11-09T13:36:36Z",
+    "goVersion": "go1.19.3",
+    "compiler": "gc",
+    "platform": "linux/amd64"
+  },
+  "kustomizeVersion": "v4.5.7"
+}
+```
+
+### Install kubectl on MAC 
+
+```
+fire@ashutoshhs-MacBook-Air ~ % curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0    359      0 --:--:-- --:--:-- --:--:--   358
+100 47.8M  100 47.8M    0     0  6956k      0  0:00:07  0:00:07 --:--:-- 7953k
+fire@ashutoshhs-MacBook-Air ~ % ls
+Applications		Library			Public			go			svc.yml
+Desktop			Movies			admin.conf		kubectl
+Documents		Music			certs			nginx-13.2.4.tgz
+Downloads		Pictures		config_file_create.sh	sa.kubeconfig
+fire@ashutoshhs-MacBook-Air ~ % sudo cp kubectl  /usr/local/bin 
+Password:
+fire@ashutoshhs-MacBook-Air ~ % sudo chmod +x /usr/local/bin/kubectl
+fire@ashutoshhs-MacBook-Air ~ % 
+fire@ashutoshhs-MacBook-Air ~ % kubectl  version --client -o yaml 
+clientVersion:
+  buildDate: "2022-11-09T13:36:36Z"
+  compiler: gc
+  gitCommit: 872a965c6c6526caa949f0c6ac028ef7aff3fb78
+  gitTreeState: clean
+  gitVersion: v1.25.4
+  goVersion: go1.19.3
+  major: "1"
+  minor: "25"
+  platform: darwin/amd64
+
+```
 
 
 

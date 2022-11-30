@@ -372,6 +372,31 @@ services:
     restart: always 
 ```
 
+## Problem with containers management 
+
+### introduction to COntainer orchestration engine -- 
+
+<img src="carch.png">
+
+
+### Introduction to k8s 
+
+<img src="k8s.png">
+
+### k8s High level / upper level architecture 
+
+<img src="arch1.png">
+
+## Control plane components 
+
+### kube-apiServer 
+
+<img src="apis.png">
+
+### Etcd -- the Nosql DB 
+
+<img src="etcd.png">
+
 
 
 

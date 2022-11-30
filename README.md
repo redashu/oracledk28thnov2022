@@ -123,6 +123,28 @@ ashu@docker-ce ashu-images]$ docker  run -it --name ashuc2 -v ashu-vol:/mnt/data
 '/mnt/data/#innodb_redo/#ib_redo12_
 ```
 
+### bind mount 
+
+```
+ashu@docker-ce ashu-images]$ git clone https://github.com/yenchiah/project-website-template.git
+Cloning into 'project-website-template'...
+remote: Enumerating objects: 1025, done.
+remote: Total 1025 (delta 0), reused 0 (delta 0), pack-reused 1025
+Receiving objects: 100% (1025/1025), 1.64 MiB | 7.23 MiB/s, done.
+Resolving deltas: 100% (632/632), done.
+[ashu@docker-ce ashu-images]$ ls
+html-sample-app  java-app  javawebapp  project-website-template  python-apps
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ pwd
+/home/ashu/ashu-images
+[ashu@docker-ce ashu-images]$ docker run -d --name ashuwebc1 -v  /home/ashu/ashu-images/project-website-template/:/usr/share/nginx/html:ro -p 1234:80 nginx 
+08b98c82acc413d49dc0ff3daa972094f5f47da66a245eebd9038f7e43f438b3
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+[ashu@docker-ce ashu-images]$ 
+
+```
+
 
 
 

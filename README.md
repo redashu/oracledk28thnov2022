@@ -485,21 +485,133 @@ NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
 ashulb2   NodePort   10.96.221.241   <none>        80:31945/TCP   17s   app=ashu-dep1
 ```
 
-### Question 
+## Introduction to Secret 
+
+<img src="secret.png">
+
+### creating secret to store db password in key value format 
 
 ```
-  1. Create a yaml file named  <yourname>splunk.yaml
-  2. when you RUN yAML it must create a namespace called  <yourname>splunkns and all the must be inside in this namespace only
-  3. use splunk/splunk:latest image from docker hub  
-  4. required ENV variable must be stored in ConfigMap  
-  5. Required password must be stored in Secret 
-  6. replica count 1 
-  7. create service of Nodeport  type named <yourname>svc 
-  8. access this from web browser 
-  9. Note : default username of splunk is admin and splunk default port number is 8000 
-  
-  
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  secret 
+Create a secret using specified subcommand.
+
+Available Commands:
+  docker-registry   Create a secret for use with a Docker registry
+  generic           Create a secret from a local file, directory, or literal value
+  tls               Create a TLS secret
+
+Usage:
+  kubectl create secret [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  secret  generic  ashu-db-secret  --from-
+--from-env-file  --from-file      --from-literal   
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  secret  generic  ashu-db-secret  --from-literal  sqlpassword="Oracle@098#"  --dry-run=client -o yaml  >secretdb.yaml 
+[ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### taking key 
 
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f secretdb.yaml 
+secret/ashu-db-secret created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get secret 
+NAME             TYPE     DATA   AGE
+ashu-db-secret   Opaque   1      5s
+[ashu@docker-ce deploy-app-k8s]$ kubectl  describe secrets ashu-db-secret 
+Name:         ashu-db-secret
+Namespace:    ashu-apps
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+sqlpassword:  11 bytes
+```
+
+### creating confimap for the variables values storage purpose 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  configmap  ashu-cm --from-
+--from-env-file  --from-file      --from-literal   
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  configmap  ashu-cm --from-literal   db-name="hello-db" --dry-run=client -o yaml >cm.yaml 
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f cm.yaml 
+configmap/ashu-cm created
+[ashu@docker-ce deploy-app-k8s]$ kubectl  get  cm 
+NAME               DATA   AGE
+ashu-cm            1      3s
+kube-root-ca.crt   1      6h27m
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+### YAML file for Db deployment 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db # name of deployment 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template: # template section 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        ports:
+        - containerPort: 3306
+        env: # calling / create ENV 
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom: # reading password from somewhere 
+            secretKeyRef: # reading password from secret 
+              name: ashu-db-secret # name of secret 
+              key: sqlpassword # key of secret 
+        - name: MYSQL_DATABASE
+          valueFrom: # calling db name 
+            configMapKeyRef:
+              name: ashu-cm
+              key: db-name 
+        resources: {}
+status: {}
+
+```
+
+### Deploy it 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   apply -f  db.yaml 
+deployment.apps/ashu-db created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy 
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-db   0/1     1            0           5s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  po 
+NAME                       READY   STATUS              RESTARTS   AGE
+ashu-db-6b9ffd9db8-6f9kr   0/1     ContainerCreating   0          10s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  secret 
+NAME             TYPE     DATA   AGE
+ashu-db-secret   Opaque   1      9m55s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  cm
+NAME               DATA   AGE
+ashu-cm            1      2m15s
+kube-root-ca.crt   1      6h29m
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  po 
+NAME                       READY   STATUS    RESTARTS   AGE
+ashu-db-6b9ffd9db8-6f9kr   1/1     Running   0          20s
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
 

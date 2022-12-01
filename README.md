@@ -376,6 +376,68 @@ pod "ashupod111" deleted
 service "ashusvc1" deleted
 ```
 
+## Introduction to Controller in k8s --  
+
+### replication controller 
+
+<img src="rc.png">
+
+### Introduction to deployment controller 
+
+<img src="deploy.png">
+
+### creating deployment YAML 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   create  deployment  ashu-dep1 --image=docker.io/dockerashu/ashunginx:1.0 --port=80 --dry-run=client -o yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-dep1
+  name: ashu-dep1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-dep1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-dep1
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashunginx:1.0
+        name: ashunginx
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+[ashu@docker-ce deploy-app-k8s]$ kubectl   create  deployment  ashu-dep1 --image=docker.io/dockerashu/ashunginx:1.0 --port=80 --dry-run=client -o yaml >deployment.yaml
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+### lets deploy yaml 
+
+```
+ashu@docker-ce deploy-app-k8s]$ kubectl   apply -f deployment.yaml 
+deployment.apps/ashu-dep1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deployment 
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   1/1     1            1           4s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   1/1     1            1           8s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+NAME                         READY   STATUS    RESTARTS   AGE
+ashu-dep1-576966455d-nfstx   1/1     Running   0          11s
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+
 
 
 

@@ -276,4 +276,106 @@ ashu-lb1   NodePort   10.104.23.97   <none>        1234:32307/TCP   108s   run=a
 [ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### YAML with Multiple resource in task 
+
+### to generate YAML output use below 
+
+```
+ 415  kubectl  create  namespace ashuk8s1  --dry-run=client -o yaml
+  416  kubectl  run ashupod111 --image=ubuntu --command sleep 10000 --dry-run=client -o yaml
+  417  kubectl  create service nodeport ashusvc1  --tcp 1234:80  --namespace ashuk8s1 --dry-run=client -o yaml
+```
+
+### 
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: ashuk8s1
+spec: {}
+status: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod111
+  name: ashupod111
+  namespace: ashuk8s1 # namespace info 
+spec:
+  containers:
+  - command:
+    - sleep
+    - "10000"
+    image: ubuntu
+    name: ashupod111
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashusvc1
+  name: ashusvc1
+  namespace: ashuk8s1
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30007 # static range  
+  selector:
+    app: ashusvc1
+  type: NodePort
+status:
+  loadBalancer: {}
+
+```
+
+### lets deploy it 
+
+```
+ashu@docker-ce deploy-app-k8s]$ kubectl apply -f mytask.yaml 
+namespace/ashuk8s1 created
+pod/ashupod111 created
+service/ashusvc1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  ns  |  grep ashu
+ashu-apps              Active   136m
+ashu-project           Active   20d
+ashu-space             Active   15d
+ashuk8s1               Active   13s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods -n ashuk8s1 
+NAME         READY   STATUS    RESTARTS   AGE
+ashupod111   1/1     Running   0          24s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  svc -n ashuk8s1 
+NAME       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+ashusvc1   NodePort   10.108.78.243   <none>        1234:30007/TCP   28s
+[ashu@docker-ce deploy-app-k8s]$ ls
+ashu-app.yaml  auto.json  autopod.yaml  mytask.yaml  nodeport1.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl  -n ashuk8s1  cp  auto.json   ashupod111:/tmp/
+[ashu@docker-ce deploy-app-k8s]$ kubectl  -n ashuk8s1  exec ashupod111  -- ls /tmp
+auto.json
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+### lets clean up 
+
+```
+ashu@docker-ce deploy-app-k8s]$ kubectl  delete -f mytask.yaml 
+namespace "ashuk8s1" deleted
+pod "ashupod111" deleted
+service "ashusvc1" deleted
+```
+
+
+
 

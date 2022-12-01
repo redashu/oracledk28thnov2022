@@ -437,6 +437,37 @@ ashu-dep1-576966455d-nfstx   1/1     Running   0          11s
 [ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### scale pod horizentally using deployment 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   1/1     1            1           3m47s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   scale deployment  ashu-dep1  --replicas 3
+deployment.apps/ashu-dep1 scaled
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   2/3     3            2           3m56s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   3/3     3            3           4m3s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods -o wide
+NAME                         READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashu-dep1-576966455d-c45qw   1/1     Running   0          13s   192.168.235.152   worker1   <none>           <none>
+ashu-dep1-576966455d-nxlvx   1/1     Running   0          61s   192.168.189.110   worker2   <none>           <none>
+ashu-dep1-576966455d-wl6gc   1/1     Running   0          13s   192.168.189.77    worker2   <none>           <none>
+```
+
+### deleting deployment 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  delete deploy ashu-dep1 
+deployment.apps "ashu-dep1" deleted
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get po 
+No resources found in ashu-apps namespace.
+```
+
 
 
 

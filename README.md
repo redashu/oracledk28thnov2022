@@ -85,5 +85,88 @@ pod "ashupod-2" deleted
 [ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### Namespace concept in k8s 
+
+<img src="ns.png">
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   create  namespace  ashu-apps --dry-run=client 
+namespace/ashu-apps created (dry run)
+[ashu@docker-ce deploy-app-k8s]$ kubectl   create  namespace  ashu-apps --dry-run=client -o yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: ashu-apps
+spec: {}
+status: {}
+[ashu@docker-ce deploy-app-k8s]$ kubectl   create  namespace  ashu-apps 
+namespace/ashu-apps created
+[ashu@docker-ce deploy-app-k8s]$ kubectl  config set-context --current --namespace=ashu-apps 
+Context "kubernetes-admin@kubernetes" modified.
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+No resources found in ashu-apps namespace.
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+### checking ns and creating pod inside 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  get  pods
+No resources found in ashu-apps namespace.
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl   config get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-apps
+[ashu@docker-ce deploy-app-k8s]$ ls
+ashu-app.yaml  auto.json  autopod.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl   apply -f ashu-app.yaml 
+pod/ashupod-1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl  get pods
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-1   1/1     Running   0          3s
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+### multi container pod 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashupod-2
+  name: ashupod-2
+spec:
+  containers:
+  - image: oraclelinux:8.4
+    name: ashuc1
+    command: ["sh","-c","sleep 10000"]
+  - image: docker.io/dockerashu/ashunginx:1.0
+    name: ashupod-2
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
+
+## Networking in k8s 
+
+<img src="net1.png">
+
+### Internal LB will be Required 
+
+<img src="net2.png">
+
+### overall networking flow for k8s app
+
+<img src="appf.png">
+
+
 
 

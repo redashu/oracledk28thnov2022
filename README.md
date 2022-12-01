@@ -468,7 +468,28 @@ deployment.apps "ashu-dep1" deleted
 No resources found in ashu-apps namespace.
 ```
 
+### creating deployment and expose it to create service 
 
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy 
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-dep1   1/1     1            1           50s
+[ashu@docker-ce deploy-app-k8s]$ kubectl  expose  deployment  ashu-dep1  --type  NodePort --port 80 --name ashulb2 --dry-run=client -o yaml >newsvc.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f newsvc.yaml 
+service/ashulb2 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl  get po --show-labels 
+NAME                         READY   STATUS    RESTARTS   AGE     LABELS
+ashu-dep1-576966455d-tlsgl   1/1     Running   0          2m22s   app=ashu-dep1,pod-template-hash=576966455d
+[ashu@docker-ce deploy-app-k8s]$ kubectl  get svc -o wide
+NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+ashulb2   NodePort   10.96.221.241   <none>        80:31945/TCP   17s   app=ashu-dep1
+```
+
+### git
+
+```
+https://github.com/redashu/reactjs.git
+```
 
 
 

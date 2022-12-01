@@ -243,4 +243,37 @@ spec:
  kubectl  create  service  nodeport  ashu-lb1  --tcp  1234:80  --dry-run=client -o yaml  >nodeport1.yaml
 ```
 
+### adjusting selector of service to label of pods 
+
+<img src="selector.png">
+
+### creating service 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods --show-labels
+NAME        READY   STATUS    RESTARTS   AGE   LABELS
+ashupod-2   1/1     Running   0          80m   run=ashupod-2
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f nodeport1.yaml 
+service/ashu-lb1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  service
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+ashu-lb1   NodePort   10.104.23.97   <none>        1234:32307/TCP   9s
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+### label of pod must match to selector label 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get po --show-labels 
+NAME        READY   STATUS    RESTARTS   AGE   LABELS
+ashupod-2   1/1     Running   0          82m   run=ashupod-2
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  service -o wide
+NAME       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE    SELECTOR
+ashu-lb1   NodePort   10.104.23.97   <none>        1234:32307/TCP   108s   run=ashupod-2
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
 

@@ -485,10 +485,20 @@ NAME      TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
 ashulb2   NodePort   10.96.221.241   <none>        80:31945/TCP   17s   app=ashu-dep1
 ```
 
-### git
+### Question 
 
 ```
-https://github.com/redashu/reactjs.git
+  1. Create a yaml file named  <yourname>splunk.yaml
+  2. when you RUN yAML it must create a namespace called  <yourname>splunkns and all the must be inside in this namespace only
+  3. use splunk/splunk:latest image from docker hub  
+  4. required ENV variable must be stored in ConfigMap  
+  5. Required password must be stored in Secret 
+  6. replica count 1 
+  7. create service of Nodeport  type named <yourname>svc 
+  8. access this from web browser 
+  9. Note : default username of splunk is admin and splunk default port number is 8000 
+  
+  
 ```
 
 

@@ -167,6 +167,80 @@ status: {}
 
 <img src="appf.png">
 
+## Introduction to service Resource in k8s -- for Internal LB purpose 
 
+<img src="service.png">
+
+### lets deploy pod and access it 
+
+### step 1 make sure you have pod running 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  config get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-apps
+[ashu@docker-ce deploy-app-k8s]$ ls
+ashu-app.yaml  auto.json  autopod.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f autopod.yaml 
+Warning: resource pods/ashupod-2 is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+pod/ashupod-2 configured
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+NAME        READY   STATUS    RESTARTS   AGE
+ashupod-2   1/1     Running   0          60m
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP                NODE      NOMINATED NODE   READINESS GATES
+ashupod-2   1/1     Running   0          60m   192.168.189.118   worker2   <none>           <none>
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+## creating service in k8s 
+
+### checking label of pods  
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods --show-labels
+NAME        READY   STATUS    RESTARTS   AGE   LABELS
+ashupod-2   1/1     Running   0          63m   run=ashupod-2
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+### type of services 
+
+<img src="stype.png">
+
+
+### creating service 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  service 
+Create a service using a specified subcommand.
+
+Aliases:
+service, svc
+
+Available Commands:
+  clusterip      Create a ClusterIP service
+  externalname   Create an ExternalName service
+  loadbalancer   Create a LoadBalancer service
+  nodeport       Create a NodePort service
+
+Usage:
+  kubectl create service [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+[ashu@docker-ce deploy-app-k8s]$ kubectl  create  service  nodeport  ashu-lb1  --tcp  1234:80  --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-lb1
+  name: ashu-lb1
+spec:
+
+====
+ kubectl  create  service  nodeport  ashu-lb1  --tcp  1234:80  --dry-run=client -o yaml  >nodeport1.yaml
+```
 
 

@@ -44,12 +44,13 @@ one-page-website-html-css-project  project-html-website
 ### .dockerignore file 
 
 ```
-FROM oraclelinux:8.4
-LABEL name=ashutoshh
-LABEL email=ashutoshh@linux.com
-RUN yum install httpd -y && mkdir -p /myapps/{webapp1,webapp2}
-COPY project-html-website /myapps/webapp1/
-ADD one-page-website-html-css-project  /myapps/webapp2/
+one-page-website-html-css-project/.git
+one-page-website-html-css-project/LICENSE
+one-page-website-html-css-project/README.md
+project-html-website/.git
+project-html-website/LICENSE
+project-html-website/README.md
+project-html-website/SECURITY.md
 
 ```
 

@@ -297,3 +297,43 @@ ashu-final-lb3   ClusterIP   10.108.208.90   <none>        80/TCP    2s
 ```
 
 
+### with Ingress deploy app 
+
+<img src="apping.png">
+
+### Ingress rule 
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashu-app-route # name of my app routing rule 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # className means which product u r using to implement ingress 
+  rules:
+  - host: me.ashutoshh.in # the domain name of app which people will use to access 
+    http:
+      paths:
+      - path: / # on homepage to app 
+        pathType: Prefix
+        backend:
+          service:
+            name: ashu-final-lb3 # service name where ingress will forward traffic 
+            port:
+              number: 80 # port of service 
+```
+
+### lets deploy it 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl apply -f ashu-ingress-rule.yaml 
+ingress.networking.k8s.io/ashu-app-route created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  ingress
+NAME             CLASS   HOSTS             ADDRESS         PORTS   AGE
+ashu-app-route   nginx   me.ashutoshh.in   172.31.39.221   80      4s
+[ashu@docker-ce deploy-app-k8s]$ 
+```
+
+

@@ -236,6 +236,25 @@ ashu-final-app-7c549848b8-2ts7k   1/1     Running   0          18s
 
 ```
 
+### so creating Nodeport or loadbalancer service because we are not having Ingress controller 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deploy 
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-final-app   1/1     1            1           4m20s
+[ashu@docker-ce deploy-app-k8s]$ kubectl  expose deployment  ashu-final-app  --type  NodePort --port 80 --name ashulb1 --dry-run=client -o yaml >final_np.yaml
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl  expose deployment  ashu-final-app  --type  LoadBalancer --port 80 --name ashulb2 --dry-run=client -o yaml >final_lb.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f final_lb.yaml -f final_np.yaml 
+service/ashulb2 created
+service/ashulb1 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  svc 
+NAME      TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+ashulb1   NodePort       10.99.235.247    <none>        80:32528/TCP   3s
+ashulb2   LoadBalancer   10.107.195.190   <pending>     80:30008/TCP   3s
+[ashu@docker-ce deploy-app-k8s]$ 
+```
 
 
 

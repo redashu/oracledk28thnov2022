@@ -57,6 +57,95 @@ project-html-website/SECURITY.md
 ### Dockerfile 
 
 ```
+FROM oraclelinux:8.4
+LABEL name=ashutoshh
+LABEL email=ashutoshh@linux.com
+ENV APP=web 
+# creating an ENV variable with in the image with some default value 
+RUN yum install httpd -y && mkdir -p /myapps/{webapp1,webapp2}
+COPY project-html-website /myapps/webapp1/
+ADD one-page-website-html-css-project  /myapps/webapp2/
+COPY deploy.sh /myapps/
+WORKDIR /myapps
+RUN chmod +x deploy.sh
+ENTRYPOINT ["./deploy.sh"]
+# while creating container ENTRYPOINT argument is generally not replaceable like cmd
+#CMD ["./deploy.sh"]
+```
+
+### shell script 
 
 ```
+#!/bin/bash
+
+if [ "$APP" == "customerapp1" ]
+then
+    cp -rf  /myapps/webapp1/*  /var/www/html/
+    httpd -DFOREGROUND # to start apache httpd service --like systemctl start httpd 
+elif [ "$APP" == "customerapp2" ]
+then
+    cp -rf /myapps/webapp2/*  /var/www/html/
+    httpd -DFOREGROUND
+else 
+    echo "Hello please check your APP variable value " >/var/www/html/index.html
+    httpd -DFOREGROUND
+fi 
+```
+
+### compose file 
+
+```
+version: '3.8'
+services:
+  ashucustomerapp:
+    image: docker.io/dockerashu/ashu-customer:appv1 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ashuc1
+    ports:
+    - "1234:80"
+    environment:
+      APP: "customerapp1"
+    restart: always 
+```
+
+### lets test -
+
+```
+ashu@docker-ce ashu-customer]$ docker-compose up -d
+[+] Running 0/1
+ ⠿ ashucustomerapp Warning                                                                                                2.3s
+[+] Building 19.1s (5/11)                                                                                                      
+ => [internal] load build definition from Dockerfile                                                                      0.0s
+ => => transferring dockerfile: 553B                                                                                      0.0s
+ => [internal] load .dockerignore                                                                                         0.0s
+ => => transferring context: 285B                                                                                         0.0s
+ => [internal] load metadata for docker.io/library/oraclelinux:8.4                                                        0.0s
+ => CACHED [1/7] FROM docker.io/library/oraclelinux:8.4                                                                   0.0s
+ => [internal] load build context                                                                                         0.1s
+ => => transferring context: 1.19MB                                                                                       0.1s
+ => [2/7] RUN yum install httpd -y && mkdir -p /myapps/{webapp1,webapp2}                                                 19.0s
+ => => # Oracle Linux 8 BaseOS Latest (x86_64)            79 MB/s |  53 MB     00:00                                          
+
+```
+
+### push image to docker hub 
+
+```
+ashu@docker-ce ashu-customer]$ docker login -u dockerashu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ashu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[ashu@docker-ce ashu-customer]$ docker push docker.io/dockerashu/ashu-customer:appv1
+The push refers to repository [docker.io/dockerashu/ashu-customer]
+4fd0ab42ab48: Pushed 
+5f70bf18a086: Pushed 
+89f1aaa629eb: Pushed 
+```
+
+
 

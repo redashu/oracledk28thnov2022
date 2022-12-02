@@ -336,4 +336,8 @@ ashu-app-route   nginx   me.ashutoshh.in   172.31.39.221   80      4s
 [ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### secret with image 
+
+<img src="sec.png">
+
 

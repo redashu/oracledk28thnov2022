@@ -147,5 +147,95 @@ The push refers to repository [docker.io/dockerashu/ashu-customer]
 89f1aaa629eb: Pushed 
 ```
 
+### app deploy check in k8s 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ ls
+ashu-app.yaml  autopod.yaml  db.yaml          mytask.yaml  nodeport1.yaml  secretdb.yaml
+auto.json      cm.yaml       deployment.yaml  newsvc.yaml  reajct.yaml
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   44d   v1.25.3
+worker1         Ready    <none>          44d   v1.25.3
+worker2         Ready    <none>          44d   v1.25.3
+[ashu@docker-ce deploy-app-k8s]$ kubectl  config get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   ashu-apps
+[ashu@docker-ce deploy-app-k8s]$ kubectl  delete all --all
+No resources found
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+No resources found in ashu-apps namespace.
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+## Understanding Ingress controller 
+
+<img src="ingress.png">
+
+## taking cases 
+
+### app with no ingress 
+
+```
+kubectl   create  deployment ashu-final-app --image=docker.io/dockerashu/ashu-customer:appv1    --port 80 --dry-run=client -o yaml >final_deployment.yaml 
+```
+
+### updating env section 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-final-app
+  name: ashu-final-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-final-app
+  strategy: {}
+  template: # for pod creation purpose 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-final-app
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashu-customer:appv1
+        name: ashu-customer
+        ports:
+        - containerPort: 80
+        env: # using env to deploy particular app 
+        - name: APP
+          value: customerapp1 
+        resources: {}
+status: {}
+
+```
+
+### deploy it 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f final_deployment.yaml 
+deployment.apps/ashu-final-app created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deployment 
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-final-app   0/1     1            0           5s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  deployment 
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+ashu-final-app   1/1     1            1           15s
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  pods
+NAME                              READY   STATUS    RESTARTS   AGE
+ashu-final-app-7c549848b8-2ts7k   1/1     Running   0          18s
+[ashu@docker-ce deploy-app-k8s]$ 
+
+```
+
+
 
 

@@ -256,5 +256,44 @@ ashulb2   LoadBalancer   10.107.195.190   <pending>     80:30008/TCP   3s
 [ashu@docker-ce deploy-app-k8s]$ 
 ```
 
+### deleting both services 
+
+```
+[ashu@docker-ce deploy-app-k8s]$ kubectl  delete svc  ashulb1  ashulb2 
+service "ashulb1" deleted
+service "ashulb2" deleted
+```
+
+## lets take Ingress controller in picture 
+
+### verify Ingress controller in k8s 
+
+```
+[ashu@docker-ce ~]$ kubectl   get  ns  |   grep ingress
+ingress-nginx          Active   21d
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ 
+[ashu@docker-ce ~]$ kubectl   get  po -n ingress-nginx 
+NAME                                        READY   STATUS    RESTARTS         AGE
+ingress-nginx-controller-6c56945c75-bzrwl   1/1     Running   10 (3h21m ago)   20d
+[ashu@docker-ce ~]$ kubectl   get svc  -n ingress-nginx 
+NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             NodePort    10.109.170.190   <none>        80:31782/TCP,443:32292/TCP   21d
+ingress-nginx-controller-admission   ClusterIP   10.97.103.129    <none>        443/TCP                      21d
+[ashu@docker-ce ~]$ 
+```
+
+### lets create clusterIP type service 
+
+```
+ashu@docker-ce deploy-app-k8s]$ kubectl   expose deployment ashu-final-app  --type  ClusterIP --port 80 --name ashu-final-lb3 --dry-run=client -o yaml >final_lb3.yaml
+[ashu@docker-ce deploy-app-k8s]$ kubectl  apply -f final_lb3.yaml 
+service/ashu-final-lb3 created
+[ashu@docker-ce deploy-app-k8s]$ kubectl   get  svc
+NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+ashu-final-lb3   ClusterIP   10.108.208.90   <none>        80/TCP    2s
+[ashu@docker-ce deploy-app-k8s]$ 
+[ashu@docker-ce deploy-app-k8s]$ 
+```
 
 

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ashu-app-route # name of my app routing rule 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # className means which product u r using to implement ingress 
+  rules:
+  - host: me.ashutoshh.in # the domain name of app which people will use to access 
+    http:
+      paths:
+      - path: / # on homepage to app 
+        pathType: Prefix
+        backend:
+          service:
+            name: ashu-final-lb3 # service name where ingress will forward traffic 
+            port:
+              number: 80 # port of service 

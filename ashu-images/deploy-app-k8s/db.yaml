@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-db
+  name: ashu-db # name of deployment 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-db
+  strategy: {}
+  template: # template section 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-db
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        ports:
+        - containerPort: 3306
+        env: # calling / create ENV 
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom: # reading password from somewhere 
+            secretKeyRef: # reading password from secret 
+              name: ashu-db-secret # name of secret 
+              key: sqlpassword # key of secret 
+        - name: MYSQL_DATABASE
+          valueFrom: # calling db name 
+            configMapKeyRef:
+              name: ashu-cm
+              key: db-name 
+        resources: {}
+status: {}

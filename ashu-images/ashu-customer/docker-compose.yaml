@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  ashucustomerapp:
+    image: docker.io/dockerashu/ashu-customer:appv1 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ashuc1
+    ports:
+    - "1234:80"
+    environment:
+      APP: "customerapp2"
+    restart: always 

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-final-app
+  name: ashu-final-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-final-app
+  strategy: {}
+  template: # for pod creation purpose 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-final-app
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashu-customer:appv1
+        name: ashu-customer
+        ports:
+        - containerPort: 80
+        env: # using env to deploy particular app 
+        - name: APP
+          value: customerapp1 
+        resources: {}
+status: {}

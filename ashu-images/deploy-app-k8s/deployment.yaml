@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-dep1
+  name: ashu-dep1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-dep1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-dep1
+    spec:
+      containers:
+      - image: docker.io/dockerashu/ashunginx:1.0
+        name: ashunginx
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: d1
+  name: d1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d1
+  strategy: {}
+  template: # pod template 
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: d1
+    spec:
+      containers:
+      - image: docker.io/dockerashu/reactjs:appv1
+        name: reactjs
+        ports:
+        - containerPort: 3000
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: d1
+  name: ashulb3
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: d1
+  type: NodePort
+status:
+  loadBalancer: {}
+

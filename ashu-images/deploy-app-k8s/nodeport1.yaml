@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-lb1
+  name: ashu-lb1 # name of service 
+spec:
+  ports:
+  - name: 1234-80
+    port: 1234 # service (lb) port number 
+    protocol: TCP
+    targetPort: 80 # pod container port 
+  selector: # here under select we have to give label of pod 
+    run: ashupod-2 # this is the label of pod 
+  type: NodePort
+status:
+  loadBalancer: {}

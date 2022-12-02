@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  db-name: hello-db
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: ashu-cm

@@ -1,0 +1,19 @@
+version: '3.8'
+volumes:
+  ashudb-vol:
+services:
+  ashu-ui:
+    image: adminer
+    container_name: ashu-uic1
+    ports:
+    - "1234:8080"
+    depends_on:
+    - ashudbsvc 
+  ashudbsvc:
+    image: mysql
+    container_name: ashudbc1
+    environment:
+      MYSQL_ROOT_PASSWORD: "Oracle@098#"
+    volumes:
+    - "ashudb-vol:/var/lib/mysql"
+    restart: always 

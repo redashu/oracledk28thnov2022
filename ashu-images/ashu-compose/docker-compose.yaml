@@ -1,0 +1,19 @@
+version: '3.8'
+services: # here we write app component details
+  ashujavaweb:
+    image: ashujava:webv1 # want to build image 
+    build: 
+      context: ../javawebapp/ # location of dockerfile 
+      dockerfile: Dockerfile  # name of dockerfile 
+    container_name: ashujc1 
+    ports:
+    - "1299:8080"
+  ashuwebapp: # name of app component -- you can give any name 
+    image: nginx 
+    container_name: ashungc1
+    ports:
+    - "1234:80"
+    volumes:
+    - "../html-sample-app:/usr/share/nginx/html/"
+    restart: always 
+   

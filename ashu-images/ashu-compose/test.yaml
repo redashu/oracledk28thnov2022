@@ -1,0 +1,11 @@
+version: '3.8'
+volumes: # to create volume 
+  ashuvol009: # name of volume 
+services:
+  ashutestapp: 
+    image: alpine 
+    container_name: ashuc111
+    volumes: # attaching volume 
+    - "ashuvol009:/mnt/data/"
+    command: ping -i 5 www.google.com >/mnt/data/logs.txt  # script inside container 
+    restart: always 

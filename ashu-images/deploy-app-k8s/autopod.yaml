@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels: # is gonna use by service to find pod 
+    run: ashupod-2
+  name: ashupod-2
+spec:
+  containers:
+  - image: docker.io/dockerashu/ashunginx:1.0
+    name: ashupod-2
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

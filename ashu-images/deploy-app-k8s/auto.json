@@ -1,0 +1,28 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "ashupod-2",
+        "creationTimestamp": null,
+        "labels": {
+            "run": "ashupod-2"
+        }
+    },
+    "spec": {
+        "containers": [
+            {
+                "name": "ashupod-2",
+                "image": "docker.io/dockerashu/ashunginx:1.0",
+                "ports": [
+                    {
+                        "containerPort": 80
+                    }
+                ],
+                "resources": {}
+            }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+    },
+    "status": {}
+}
